@@ -1,7 +1,8 @@
-## docker-nfs-client
+# docker-nfs-client
 
-Docker image for a light NFS client. By default NFS 4 is used.
-Inspiration from https://github.com/evq/nfs-client.
+Docker image for a light NFS client (~10.9MB). By default NFS 4 is used.
+
+Based on https://github.com/evq/nfs-client.
 
 ## Usage
 
@@ -39,23 +40,38 @@ $ docker run -itd \
     $ docker tag -f nfs-client flaccid/nfs-client
     $ docker push flaccid/nfs-client
 
+## Caveat
+
+Currently isn't very useful beyond being the basis for other containers,
+[internally mounted nfs volumes can't be shared to other
+containers.](https://github.com/docker/docker/issues/4213)
+
 
 License and Authors
 -------------------
 - Author: Chris Fordham (<chris@fordham-nagy.id.au>)
 
 ```text
-Copyright 2015, Chris Fordham
+The MIT License (MIT)
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+Copyright (c) 2015 Evey Quirk
+Copyright (c) 2015 Chris Fordham
 
-    http://www.apache.org/licenses/LICENSE-2.0
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
