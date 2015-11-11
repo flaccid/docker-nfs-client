@@ -1,0 +1,43 @@
+#cloud-config
+
+# /var/lib/rancher/conf/cloud-config.d/nfs.yml
+
+# https://github.com/rancher/os/issues/641
+write_files:
+  - path: /etc/rc.local
+    permissions: "0755"
+    content: |
+      #!/bin/bash
+      [ ! -e /usr/bin/docker ] && ln -s /usr/bin/docker.dist /usr/bin/docker
+
+rancher:
+  docker:
+    # This must be the name of the service that provides the storage.  Docker will run this container.
+    storage_context: nfs
+
+  services:
+    nfs:
+      # no longer required in v0.4.0
+      # log_driver: json-file
+
+      # Your custom image
+      image: flaccid/nfs-client
+
+      # Everything below is required to be set so that Docker can run properly
+      labels:
+        io.rancher.os.after: console
+        io.rancher.os.scope: system
+      net: host
+      pid: host
+      uts: host
+      ipc: host
+      privileged: true
+      restart: always
+      volumes_from:
+      - all-volumes
+      volumes:
+      - /usr/bin/iptables:/sbin/iptables:ro
+      - /mnt/nfs-1
+      environment:
+        SERVER: 192.168.0.9
+        SHARE: movies
