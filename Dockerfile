@@ -33,6 +33,6 @@ RUN apk update && apk add --update nfs-utils && rm -rf /var/cache/apk/*
 # would only be used if extending an running a different main process in fg
 # RUN rc-update add nfs
 
-ADD entry.sh /entry.sh
+ADD entry.sh /usr/local/bin/entry.sh
 
-ENTRYPOINT ["/entry.sh"]
+ENTRYPOINT ["/usr/local/bin/entry.sh"]
