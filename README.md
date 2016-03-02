@@ -12,40 +12,37 @@ Based on https://github.com/evq/nfs-client.
 
 ### Run
 
+Basic example, mounting NFS within container:
+
     $ docker run -it --privileged=true --net=host -v /mnt/nfs-1 -e SERVER=192.168.0.9 -e SHARE=movies nfs-client
 
-or, detached:
+Writing back to the host:
 
-    $ docker run -itd --privileged=true --net=host -v /mnt/nfs-1 -e SERVER=192.168.0.9 -e SHARE=movies nfs-client
+    $ docker run -itd \
+        --privileged=true \
+        --net=host \
+        --name nfs-movies \
+        -v /media/nfs-movies:/mnt/nfs-1:shared \
+        -e SERVER=192.168.0.9 \
+        -e SHARE=movies \
+          nfs-client
 
-or, with some more options:
+Take note of the historic 'NFS shares and volumes don't mix' ([#4213](https://github.com/docker/docker/issues/4213)) to use `shared` or `rshared` as needed when needing to use `--volumes-from` with other containers. Additionally, after the container is killed you'll need to unmount the host mount too.
 
-```
-$ docker run -itd \
-    --name nfs-vols \
-    --restart=always \
-    --privileged=true \
-    --net=host \
-    -v /:/mnt/host \
-    -e SERVER=192.168.0.9 \
-    -e SHARE=movies \
-    -e MOUNT_OPTIONS="nfsvers=3,ro" \
-    -e FSTYPE=nfs3 \
-    -e MOUNTPOINT=/mnt/host/mnt/nfs-1 \
-      nfs-client
-```
+#### Runtime Environment Variables
+
+There should be a reasonable amount of flexibility using the available variables. If not please raise an issue so your use case can be covered!
+
+- `SERVER` - the hostname of the NFS server to connect to
+- `SHARE` - the name of the NFS share to mount
+- `MOUNT_OPTIONS` - mount options to mount the NFS share with
+- `FSTYPE` - the filesystem type; specify `nfs3` for NFSv3, default is `nfs` i.e. NFSv4
+- `MOUNTPOINT` - the mount point for the NFS share within the container
 
 ### Tag and Push
 
     $ docker tag -f nfs-client flaccid/nfs-client
     $ docker push flaccid/nfs-client
-
-## Caveat
-
-Currently isn't very useful beyond being the basis for other containers,
-[internally mounted nfs volumes can't be shared to other
-containers.](https://github.com/docker/docker/issues/4213)
-
 
 License and Authors
 -------------------
