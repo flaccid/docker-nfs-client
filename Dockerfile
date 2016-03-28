@@ -33,6 +33,9 @@ RUN apk update && apk add --update nfs-utils && rm -rf /var/cache/apk/*
 # would only be used if extending an running a different main process in fg
 # RUN rc-update add nfs
 
+# https://github.com/rancher/os/issues/641#issuecomment-157006575
+RUN rm /sbin/halt /sbin/poweroff /sbin/reboot
+
 ADD entry.sh /usr/local/bin/entry.sh
 
 ENTRYPOINT ["/usr/local/bin/entry.sh"]
